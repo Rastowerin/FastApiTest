@@ -3,9 +3,11 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
+from endpoints import router
 from exceptions import AddressNotFoundException
 
 app = FastAPI()
+app.include_router(router)
 
 
 # добавляем exception handler, что бы вынести лишнюю логику из эндпоинтов
