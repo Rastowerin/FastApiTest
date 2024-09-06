@@ -5,7 +5,7 @@ from starlette import status
 
 app = FastAPI()
 
-redis = Redis(host='localhost', port=6379, db=0)
+redis = Redis(host='redis', port=6379, db=0)
 
 
 class Item(SQLModel):

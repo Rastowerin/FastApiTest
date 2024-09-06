@@ -4,7 +4,7 @@ services:
 
   web:
     build: .
-    container_name: datingBackend
+    container_name: web
     command: uvicorn main:app
     volumes:
       - .:/code
