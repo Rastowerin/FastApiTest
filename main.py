@@ -1,25 +1,17 @@
 from fastapi import FastAPI
-from redis import Redis
-from sqlmodel import SQLModel
 from starlette import status
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+
+from exceptions import AddressNotFoundException
 
 app = FastAPI()
 
-redis = Redis(host='redis', port=6379, db=0)
 
-
-class Item(SQLModel):
-    phone: str
-    address: str
-
-
-@app.post("/write_data", status_code=status.HTTP_200_OK)
-async def write_data(item: Item):
-    a = redis.set(item.phone, item.address)
-    return {"message": "ok"}
-
-
-@app.get("/check_data", status_code=status.HTTP_200_OK)
-async def check_data(phone: str):
-    address = redis.get(phone)
-    return {"address": address}
+# добавляем exception handler, что бы вынести лишнюю логику из эндпоинтов
+@app.exception_handler(AddressNotFoundException)
+async def exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_404_NOT_FOUND,
+        content={"detail": str(exc)},
+    )
