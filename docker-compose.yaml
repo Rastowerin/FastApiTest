@@ -5,7 +5,7 @@ services:
   web:
     build: .
     container_name: web
-    command: uvicorn main:app
+    command: uvicorn main:app --host 127.0.0.1 --port 8000
     volumes:
       - .:/code
     ports:
